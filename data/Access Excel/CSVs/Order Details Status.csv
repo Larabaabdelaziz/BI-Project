@@ -1,0 +1,7 @@
+,Status ID,Status Name
+0,0,
+1,1,Allocated
+2,2,Invoiced
+3,3,Shipped
+4,4,On Order
+5,5,No Stock
