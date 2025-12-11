@@ -1,0 +1,330 @@
+2025-12-08 23:59:05,308 - INFO - 
+======================================================================
+2025-12-08 23:59:05,308 - INFO -                     NORTHWIND ETL PROCESS STARTED
+2025-12-08 23:59:05,309 - INFO - ======================================================================
+2025-12-08 23:59:05,309 - INFO - 
+============================================================
+2025-12-08 23:59:05,310 - INFO - STEP 1: TRANSFORMING DIMENSION TABLES
+2025-12-08 23:59:05,310 - INFO - ============================================================
+2025-12-09 00:01:05,600 - INFO - 
+======================================================================
+2025-12-09 00:01:05,600 - INFO -                     NORTHWIND ETL PROCESS STARTED
+2025-12-09 00:01:05,600 - INFO - ======================================================================
+2025-12-09 00:01:05,600 - INFO - 
+============================================================
+2025-12-09 00:01:05,600 - INFO - STEP 1: TRANSFORMING DIMENSION TABLES
+2025-12-09 00:01:05,600 - INFO - ============================================================
+2025-12-09 00:01:05,600 - INFO - ✓ Extracted 45 rows from Products.csv
+2025-12-09 00:01:05,620 - INFO - ✓ Extracted 29 rows from Customers.csv
+2025-12-09 00:01:05,625 - INFO - ✓ Extracted 9 rows from Employees.csv
+2025-12-09 00:01:05,630 - INFO - ✓ Extracted 10 rows from Suppliers.csv
+2025-12-09 00:01:05,632 - INFO - → Loading 45 rows into Dim_Product (Mode: 'replace')...
+2025-12-09 00:01:08,609 - ERROR - ✗ FAILED to load Dim_Product. Check traceback.
+Traceback (most recent call last):
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 951, in do_execute
+    cursor.execute(statement, parameters)
+pyodbc.ProgrammingError: ('42000', "[42000] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not drop object 'Dim_Product' because it is referenced by a FOREIGN KEY constraint. (3726) (SQLExecDirectW)")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\ADMIN\Desktop\BI Project\etl\etl.py", line 85, in load_to_sql
+    df.to_sql(
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\pandas\util\_decorators.py", line 333, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\pandas\core\generic.py", line 3109, in to_sql
+    return sql.to_sql(
+           ^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\pandas\io\sql.py", line 844, in to_sql
+    return pandas_sql.to_sql(
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\pandas\io\sql.py", line 2020, in to_sql
+    table = self.prep_table(
+            ^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\pandas\io\sql.py", line 1924, in prep_table
+    table.create()
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\pandas\io\sql.py", line 990, in create
+    self.pd_sql.drop_table(self.name, self.schema)
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\pandas\io\sql.py", line 2075, in drop_table
+    self.get_table(table_name, schema).drop(bind=self.con)
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\sql\schema.py", line 1300, in drop
+    bind._run_ddl_visitor(ddl.SchemaDropper, self, checkfirst=checkfirst)
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2459, in _run_ddl_visitor
+    ).traverse_single(element)
+      ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\sql\visitors.py", line 661, in traverse_single
+    return meth(obj, **kw)
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\sql\ddl.py", line 1209, in visit_table
+    DropTable(table)._invoke_with(self.connection)
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\sql\ddl.py", line 321, in _invoke_with
+    return bind.execute(self)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1419, in execute
+    return meth(
+           ^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\sql\ddl.py", line 187, in _execute_on_connection
+    return connection._execute_ddl(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1530, in _execute_ddl
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2355, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 951, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.ProgrammingError: (pyodbc.ProgrammingError) ('42000', "[42000] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not drop object 'Dim_Product' because it is referenced by a FOREIGN KEY constraint. (3726) (SQLExecDirectW)")
+[SQL: 
+DROP TABLE [Dim_Product]]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-12-09 00:01:08,704 - INFO - → Loading 29 rows into Dim_Customer (Mode: 'replace')...
+2025-12-09 00:01:10,753 - ERROR - ✗ FAILED to load Dim_Customer. Check traceback.
+Traceback (most recent call last):
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 951, in do_execute
+    cursor.execute(statement, parameters)
+pyodbc.ProgrammingError: ('42000', "[42000] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not drop object 'Dim_Customer' because it is referenced by a FOREIGN KEY constraint. (3726) (SQLExecDirectW)")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\ADMIN\Desktop\BI Project\etl\etl.py", line 85, in load_to_sql
+    df.to_sql(
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\pandas\util\_decorators.py", line 333, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\pandas\core\generic.py", line 3109, in to_sql
+    return sql.to_sql(
+           ^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\pandas\io\sql.py", line 844, in to_sql
+    return pandas_sql.to_sql(
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\pandas\io\sql.py", line 2020, in to_sql
+    table = self.prep_table(
+            ^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\pandas\io\sql.py", line 1924, in prep_table
+    table.create()
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\pandas\io\sql.py", line 990, in create
+    self.pd_sql.drop_table(self.name, self.schema)
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\pandas\io\sql.py", line 2075, in drop_table
+    self.get_table(table_name, schema).drop(bind=self.con)
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\sql\schema.py", line 1300, in drop
+    bind._run_ddl_visitor(ddl.SchemaDropper, self, checkfirst=checkfirst)
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2459, in _run_ddl_visitor
+    ).traverse_single(element)
+      ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\sql\visitors.py", line 661, in traverse_single
+    return meth(obj, **kw)
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\sql\ddl.py", line 1209, in visit_table
+    DropTable(table)._invoke_with(self.connection)
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\sql\ddl.py", line 321, in _invoke_with
+    return bind.execute(self)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1419, in execute
+    return meth(
+           ^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\sql\ddl.py", line 187, in _execute_on_connection
+    return connection._execute_ddl(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1530, in _execute_ddl
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2355, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 951, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.ProgrammingError: (pyodbc.ProgrammingError) ('42000', "[42000] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not drop object 'Dim_Customer' because it is referenced by a FOREIGN KEY constraint. (3726) (SQLExecDirectW)")
+[SQL: 
+DROP TABLE [Dim_Customer]]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-12-09 00:01:10,755 - INFO - → Loading 9 rows into Dim_Employee (Mode: 'replace')...
+2025-12-09 00:01:12,857 - ERROR - ✗ FAILED to load Dim_Employee. Check traceback.
+Traceback (most recent call last):
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 951, in do_execute
+    cursor.execute(statement, parameters)
+pyodbc.ProgrammingError: ('42000', "[42000] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not drop object 'Dim_Employee' because it is referenced by a FOREIGN KEY constraint. (3726) (SQLExecDirectW)")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\ADMIN\Desktop\BI Project\etl\etl.py", line 85, in load_to_sql
+    df.to_sql(
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\pandas\util\_decorators.py", line 333, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\pandas\core\generic.py", line 3109, in to_sql
+    return sql.to_sql(
+           ^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\pandas\io\sql.py", line 844, in to_sql
+    return pandas_sql.to_sql(
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\pandas\io\sql.py", line 2020, in to_sql
+    table = self.prep_table(
+            ^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\pandas\io\sql.py", line 1924, in prep_table
+    table.create()
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\pandas\io\sql.py", line 990, in create
+    self.pd_sql.drop_table(self.name, self.schema)
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\pandas\io\sql.py", line 2075, in drop_table
+    self.get_table(table_name, schema).drop(bind=self.con)
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\sql\schema.py", line 1300, in drop
+    bind._run_ddl_visitor(ddl.SchemaDropper, self, checkfirst=checkfirst)
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2459, in _run_ddl_visitor
+    ).traverse_single(element)
+      ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\sql\visitors.py", line 661, in traverse_single
+    return meth(obj, **kw)
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\sql\ddl.py", line 1209, in visit_table
+    DropTable(table)._invoke_with(self.connection)
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\sql\ddl.py", line 321, in _invoke_with
+    return bind.execute(self)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1419, in execute
+    return meth(
+           ^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\sql\ddl.py", line 187, in _execute_on_connection
+    return connection._execute_ddl(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1530, in _execute_ddl
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2355, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 951, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.ProgrammingError: (pyodbc.ProgrammingError) ('42000', "[42000] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not drop object 'Dim_Employee' because it is referenced by a FOREIGN KEY constraint. (3726) (SQLExecDirectW)")
+[SQL: 
+DROP TABLE [Dim_Employee]]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-12-09 00:01:12,862 - INFO - → Loading 10 rows into Dim_Supplier (Mode: 'replace')...
+2025-12-09 00:01:15,117 - ERROR - ✗ FAILED to load Dim_Supplier. Check traceback.
+Traceback (most recent call last):
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 951, in do_execute
+    cursor.execute(statement, parameters)
+pyodbc.ProgrammingError: ('42000', "[42000] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not drop object 'Dim_Supplier' because it is referenced by a FOREIGN KEY constraint. (3726) (SQLExecDirectW)")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\ADMIN\Desktop\BI Project\etl\etl.py", line 85, in load_to_sql
+    df.to_sql(
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\pandas\util\_decorators.py", line 333, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\pandas\core\generic.py", line 3109, in to_sql
+    return sql.to_sql(
+           ^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\pandas\io\sql.py", line 844, in to_sql
+    return pandas_sql.to_sql(
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\pandas\io\sql.py", line 2020, in to_sql
+    table = self.prep_table(
+            ^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\pandas\io\sql.py", line 1924, in prep_table
+    table.create()
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\pandas\io\sql.py", line 990, in create
+    self.pd_sql.drop_table(self.name, self.schema)
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\pandas\io\sql.py", line 2075, in drop_table
+    self.get_table(table_name, schema).drop(bind=self.con)
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\sql\schema.py", line 1300, in drop
+    bind._run_ddl_visitor(ddl.SchemaDropper, self, checkfirst=checkfirst)
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2459, in _run_ddl_visitor
+    ).traverse_single(element)
+      ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\sql\visitors.py", line 661, in traverse_single
+    return meth(obj, **kw)
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\sql\ddl.py", line 1209, in visit_table
+    DropTable(table)._invoke_with(self.connection)
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\sql\ddl.py", line 321, in _invoke_with
+    return bind.execute(self)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1419, in execute
+    return meth(
+           ^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\sql\ddl.py", line 187, in _execute_on_connection
+    return connection._execute_ddl(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1530, in _execute_ddl
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2355, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\ADMIN\Desktop\BI Project\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 951, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.ProgrammingError: (pyodbc.ProgrammingError) ('42000', "[42000] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not drop object 'Dim_Supplier' because it is referenced by a FOREIGN KEY constraint. (3726) (SQLExecDirectW)")
+[SQL: 
+DROP TABLE [Dim_Supplier]]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-12-09 00:01:15,132 - INFO - 
+============================================================
+2025-12-09 00:01:15,132 - INFO - STEP 2: TRANSFORMING FACT SALES (EXPORTS)
+2025-12-09 00:01:15,132 - INFO - ============================================================
+2025-12-09 00:01:15,132 - INFO - ✓ Extracted 48 rows from Orders.csv
+2025-12-09 00:01:15,132 - INFO - ✓ Extracted 58 rows from Order Details.csv
+2025-12-09 00:01:15,148 - INFO - ✓ Extracted 4 rows from Orders Status.csv
+2025-12-09 00:01:15,150 - INFO - ✓ Merged 58 sales records
+2025-12-09 00:01:15,186 - INFO - ✓ Prepared 58 sales records for loading
+2025-12-09 00:01:15,186 - INFO - 
+============================================================
+2025-12-09 00:01:15,186 - INFO - STEP 3: TRANSFORMING FACT PURCHASES (IMPORTS)
+2025-12-09 00:01:15,186 - INFO - ============================================================
+2025-12-09 00:01:15,193 - INFO - ✓ Extracted 28 rows from Purchase Orders.csv
+2025-12-09 00:01:15,200 - INFO - ✓ Extracted 55 rows from Purchase Order Details.csv
+2025-12-09 00:01:15,206 - INFO - ✓ Merged 55 purchase records
+2025-12-09 00:01:15,216 - INFO - ✓ Prepared 55 purchase records for loading
+2025-12-09 00:01:15,216 - INFO - → Loading 58 rows into Fact_Sales (Mode: 'append')...
+2025-12-09 00:01:15,532 - INFO - ✓ SUCCESS: 348 total rows now in Fact_Sales
+2025-12-09 00:01:15,532 - INFO - → Loading 55 rows into Fact_Purchases (Mode: 'append')...
+2025-12-09 00:01:15,614 - INFO - ✓ SUCCESS: 330 total rows now in Fact_Purchases
+2025-12-09 00:01:15,614 - INFO - 
+======================================================================
+2025-12-09 00:01:15,614 - INFO - ETL COMPLETE: 2 tables loaded successfully, 4 failed
+2025-12-09 00:01:15,614 - INFO - ======================================================================
+
+2025-12-09 00:02:21,534 - INFO - 
+======================================================================
+2025-12-09 00:02:21,534 - INFO -                     NORTHWIND ETL PROCESS STARTED
+2025-12-09 00:02:21,534 - INFO - ======================================================================
+2025-12-09 00:02:21,534 - INFO - 
+============================================================
+2025-12-09 00:02:21,534 - INFO - STEP 1: TRANSFORMING DIMENSION TABLES
+2025-12-09 00:02:21,534 - INFO - ============================================================
