@@ -14,26 +14,47 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for professional look
+# --- CUSTOM CSS FIXES ---
 st.markdown("""
 <style>
+    /* Headers */
     .main-header {
         font-size: 2.5rem;
         font-weight: 700;
-        color: #1f2937;
+        color: #FFFFFF;
         margin-bottom: 0.5rem;
     }
     .sub-header {
         font-size: 1.1rem;
-        color: #6b7280;
+        color: #FFFFFF;
         margin-bottom: 2rem;
     }
-    .metric-card {
-        background-color: #f9fafb;
-        padding: 1.5rem;
-        border-radius: 0.5rem;
-        border-left: 4px solid #3b82f6;
+    
+    /* Metric Cards */
+    div[data-testid="stMetricValue"] {
+        font-size: 1.8rem;
+        color: #FFFFFF;
     }
+    
+    /* FIX: Expander Background and Text Color */
+    .streamlit-expanderContent {
+        background-color: #ffffff !important;
+        color: #1f2937 !important;
+    }
+    
+    div[data-testid="stExpander"] details {
+        background-color: #f9fafb;
+        border-radius: 0.5rem;
+        border: 1px solid #e5e7eb;
+        color: #1f2937; /* Force dark text */
+    }
+
+    div[data-testid="stExpander"] details:hover {
+        background-color: #f3f4f6;
+        color: #000000; /* Force black text on hover */
+    }
+
+    /* Tab Styling */
     .stTabs [data-baseweb="tab-list"] {
         gap: 2rem;
     }
@@ -41,10 +62,6 @@ st.markdown("""
         height: 3rem;
         font-weight: 600;
         font-size: 1rem;
-    }
-    div[data-testid="stExpander"] details {
-        background-color: #f9fafb;
-        border-radius: 0.5rem;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -258,6 +275,7 @@ with tab1:
         }).reset_index()
         yearly_revenue.columns = ['Year', 'Revenue', 'Orders']
         
+        # FIX: Ensure proper bar chart formatting even with single year
         fig1 = go.Figure()
         fig1.add_trace(go.Bar(
             x=yearly_revenue['Year'],
@@ -265,14 +283,20 @@ with tab1:
             name='Revenue',
             marker_color='#3b82f6',
             text=yearly_revenue['Revenue'].apply(lambda x: f'${x:,.0f}'),
-            textposition='outside'
+            textposition='outside',
+            cliponaxis=False # FIX: Prevents numbers from being cut off
         ))
         fig1.update_layout(
             title="Annual Revenue",
             xaxis_title="Year",
             yaxis_title="Revenue (USD)",
             showlegend=False,
-            height=400
+            height=400,
+            template="plotly_white",
+            # FIX: Force x-axis to behave as categories (prevents wide bars)
+            xaxis=dict(type='category'),
+            # FIX: Add top margin so numbers don't get hidden
+            margin=dict(t=50, l=20, r=20, b=20) 
         )
         st.plotly_chart(fig1, use_container_width=True)
     
@@ -290,7 +314,11 @@ with tab1:
             labels={'TotalRevenue': 'Revenue (USD)', 'MonthName': 'Month'},
             markers=True
         )
-        fig2.update_layout(height=400)
+        fig2.update_layout(
+            height=400,
+            template="plotly_white",
+            margin=dict(t=50)
+        )
         st.plotly_chart(fig2, use_container_width=True)
     
     # Revenue by Category and Top Customers
@@ -313,8 +341,18 @@ with tab1:
             color_continuous_scale='Blues',
             text='Revenue'
         )
-        fig3.update_traces(texttemplate='$%{text:,.0f}', textposition='outside')
-        fig3.update_layout(height=400, showlegend=False)
+        # FIX: Adjusted formatting and cliponaxis
+        fig3.update_traces(
+            texttemplate='$%{text:,.0f}', 
+            textposition='outside',
+            cliponaxis=False
+        )
+        fig3.update_layout(
+            height=400, 
+            showlegend=False,
+            template="plotly_white",
+            margin=dict(t=50)
+        )
         st.plotly_chart(fig3, use_container_width=True)
     
     with col4:
@@ -335,8 +373,17 @@ with tab1:
             color_continuous_scale='Greens',
             text='Revenue'
         )
-        fig4.update_traces(texttemplate='$%{text:,.0f}', textposition='outside')
-        fig4.update_layout(height=400, showlegend=False)
+        fig4.update_traces(
+            texttemplate='$%{text:,.0f}', 
+            textposition='outside',
+            cliponaxis=False
+        )
+        fig4.update_layout(
+            height=400, 
+            showlegend=False,
+            template="plotly_white",
+            margin=dict(t=50)
+        )
         st.plotly_chart(fig4, use_container_width=True)
     
     # Top Products
@@ -425,7 +472,7 @@ with tab2:
                 annotation_text="Tax Threshold: $500",
                 annotation_position="top right"
             )
-            fig5.update_layout(height=400)
+            fig5.update_layout(height=400, template="plotly_white")
             st.plotly_chart(fig5, use_container_width=True)
         
         with col5:
@@ -444,13 +491,16 @@ with tab2:
                 y=tax_comparison['Amount'],
                 marker_color=['#3b82f6', '#ef4444'],
                 text=tax_comparison['Amount'].apply(lambda x: f'${x:,.0f}'),
-                textposition='outside'
+                textposition='outside',
+                cliponaxis=False
             ))
             fig6.update_layout(
                 title="Total Freight Cost: Impact of 10% Tax",
                 yaxis_title="Amount (USD)",
                 showlegend=False,
-                height=400
+                height=400,
+                template="plotly_white",
+                margin=dict(t=50)
             )
             st.plotly_chart(fig6, use_container_width=True)
         
@@ -516,7 +566,7 @@ with tab3:
             hole=0.4
         )
         fig7.update_traces(textposition='inside', textinfo='percent+label')
-        fig7.update_layout(height=400)
+        fig7.update_layout(height=400, template="plotly_white")
         st.plotly_chart(fig7, use_container_width=True)
     
     with col5:
@@ -533,7 +583,7 @@ with tab3:
             color_discrete_map={'Delivered': '#10b981', 'Not Delivered': '#ef4444'},
             barmode='group'
         )
-        fig8.update_layout(height=400)
+        fig8.update_layout(height=400, template="plotly_white")
         st.plotly_chart(fig8, use_container_width=True)
     
     # Delivery by Employee
@@ -562,7 +612,8 @@ with tab3:
         xaxis_title="Employee",
         yaxis_title="Number of Orders",
         barmode='stack',
-        height=400
+        height=400,
+        template="plotly_white"
     )
     st.plotly_chart(fig9, use_container_width=True)
     
@@ -594,11 +645,12 @@ with tab3:
         xaxis_title="Number of Orders",
         yaxis_title="Customer",
         barmode='stack',
-        height=400
+        height=400,
+        template="plotly_white"
     )
     st.plotly_chart(fig10, use_container_width=True)
     
-    # Detailed table
+    # Detailed table with fixed colors
     with st.expander("View Detailed Delivery Data"):
         delivery_detail = employee_delivery.reset_index()
         delivery_detail.columns = ['Employee', 'Delivered', 'Not Delivered', 'Total Orders', 'Delivery Rate (%)']
@@ -610,10 +662,11 @@ st.sidebar.subheader("Data Summary")
 st.sidebar.write(f"**Sales Records:** {len(sales_df):,}")
 st.sidebar.write(f"**Purchase Records:** {len(purchases_df):,}")
 st.sidebar.write(f"**Filtered Sales:** {len(filtered_sales):,}")
-st.sidebar.write(f"**Date Range:** {sales_df['OrderDate'].min().strftime('%Y-%m-%d')} to {sales_df['OrderDate'].max().strftime('%Y-%m-%d')}")
+if not sales_df.empty:
+    st.sidebar.write(f"**Date Range:** {sales_df['OrderDate'].min().strftime('%Y-%m-%d')} to {sales_df['OrderDate'].max().strftime('%Y-%m-%d')}")
 
 st.sidebar.markdown("---")
-st.sidebar.caption("Northwind Traders BI Dashboard v1.0")
+st.sidebar.caption("Northwind Traders BI Dashboard v1.1")
 st.sidebar.caption("Data Source: DWH_Northwind (SQL Server)")
 st.sidebar.caption(f"Last Updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 

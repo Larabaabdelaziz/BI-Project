@@ -40,7 +40,7 @@ def validate_and_fix_foreign_keys(df, fact_key_column, dim_table, dim_key_column
             print(f"   Orphaned IDs: {sorted(list(orphaned_keys))[:10]}")  # Show first 10
             
             # Option 1: Add placeholder entries (recommended for employees)
-            if dim_table == 'Dim_Employee':
+            if dim_table == 'DWH_TFOUTD_Dim_Employee':
                 print(f"   Adding placeholder employees to {dim_table}...")
                 
                 # Create placeholder rows
@@ -85,12 +85,12 @@ def clear_all_tables():
     with engine.connect() as conn:
         # Clear data in correct order (facts first due to foreign keys)
         clear_queries = [
-            "DELETE FROM Fact_Sales",
-            "DELETE FROM Fact_Purchases",
-            "DELETE FROM Dim_Product",
-            "DELETE FROM Dim_Customer",
-            "DELETE FROM Dim_Employee",
-            "DELETE FROM Dim_Supplier"
+            "DELETE FROM DWH_TFOUTD_Sales_Fact",
+            "DELETE FROM DWH_TFOUTD_Purchases_Fact",
+            "DELETE FROM DWH_TFOUTD_Dim_Product",
+            "DELETE FROM DWH_TFOUTD_Dim_Customer",
+            "DELETE FROM DWH_TFOUTD_Dim_Employee",
+            "DELETE FROM DWH_TFOUTD_Dim_Supplier"
         ]
         
         for query in clear_queries:
@@ -109,7 +109,7 @@ def ensure_schema_exists():
         result = conn.execute(text("""
             SELECT COUNT(*) as table_count
             FROM INFORMATION_SCHEMA.TABLES 
-            WHERE TABLE_NAME IN ('Dim_Product', 'Dim_Customer', 'Dim_Employee', 'Dim_Supplier', 'Fact_Sales', 'Fact_Purchases')
+            WHERE TABLE_NAME IN ('DWH_TFOUTD_Dim_Product', 'DWH_TFOUTD_Dim_Customer', 'DWH_TFOUTD_Dim_Employee', 'DWH_TFOUTD_Dim_Supplier', 'DWH_TFOUTD_Sales_Fact', 'DWH_TFOUTD_Purchases_Fact')
         """))
         count = result.fetchone()[0]
         
@@ -120,17 +120,17 @@ def ensure_schema_exists():
             # Create the schema
             conn.execute(text("""
                 -- Drop existing tables in correct order
-                IF OBJECT_ID('Fact_Sales', 'U') IS NOT NULL DROP TABLE Fact_Sales;
-                IF OBJECT_ID('Fact_Purchases', 'U') IS NOT NULL DROP TABLE Fact_Purchases;
-                IF OBJECT_ID('Dim_Product', 'U') IS NOT NULL DROP TABLE Dim_Product;
-                IF OBJECT_ID('Dim_Customer', 'U') IS NOT NULL DROP TABLE Dim_Customer;
-                IF OBJECT_ID('Dim_Supplier', 'U') IS NOT NULL DROP TABLE Dim_Supplier;
-                IF OBJECT_ID('Dim_Employee', 'U') IS NOT NULL DROP TABLE Dim_Employee;
+                IF OBJECT_ID('DWH_TFOUTD_Sales_Fact', 'U') IS NOT NULL DROP TABLE DWH_TFOUTD_Sales_Fact;
+                IF OBJECT_ID('DWH_TFOUTD_Purchases_Fact', 'U') IS NOT NULL DROP TABLE DWH_TFOUTD_Purchases_Fact;
+                IF OBJECT_ID('DWH_TFOUTD_Dim_Product', 'U') IS NOT NULL DROP TABLE DWH_TFOUTD_Dim_Product;
+                IF OBJECT_ID('DWH_TFOUTD_Dim_Customer', 'U') IS NOT NULL DROP TABLE DWH_TFOUTD_Dim_Customer;
+                IF OBJECT_ID('DWH_TFOUTD_Dim_Supplier', 'U') IS NOT NULL DROP TABLE DWH_TFOUTD_Dim_Supplier;
+                IF OBJECT_ID('DWH_TFOUTD_Dim_Employee', 'U') IS NOT NULL DROP TABLE DWH_TFOUTD_Dim_Employee;
             """))
             conn.commit()
             
             conn.execute(text("""
-                CREATE TABLE Dim_Product (
+                CREATE TABLE DWH_TFOUTD_Dim_Product (
                     ProductID INT PRIMARY KEY,
                     ProductCode NVARCHAR(50),
                     ProductName NVARCHAR(100),
@@ -140,7 +140,7 @@ def ensure_schema_exists():
                     ReorderLevel INT
                 );
 
-                CREATE TABLE Dim_Customer (
+                CREATE TABLE DWH_TFOUTD_Dim_Customer (
                     CustomerID INT PRIMARY KEY,
                     Company NVARCHAR(50),
                     FirstName NVARCHAR(50),
@@ -149,7 +149,7 @@ def ensure_schema_exists():
                     CountryRegion NVARCHAR(50)
                 );
 
-                CREATE TABLE Dim_Supplier (
+                CREATE TABLE DWH_TFOUTD_Dim_Supplier (
                     SupplierID INT PRIMARY KEY,
                     Company NVARCHAR(50),
                     FirstName NVARCHAR(50),
@@ -158,7 +158,7 @@ def ensure_schema_exists():
                     CountryRegion NVARCHAR(50)
                 );
 
-                CREATE TABLE Dim_Employee (
+                CREATE TABLE DWH_TFOUTD_Dim_Employee (
                     EmployeeID INT PRIMARY KEY,
                     Company NVARCHAR(50),
                     FirstName NVARCHAR(50),
@@ -166,12 +166,12 @@ def ensure_schema_exists():
                     JobTitle NVARCHAR(50)
                 );
 
-                CREATE TABLE Fact_Sales (
+                CREATE TABLE DWH_TFOUTD_Sales_Fact (
                     SalesKey INT IDENTITY(1,1) PRIMARY KEY,
                     OrderDate DATETIME NOT NULL,
-                    CustomerKey INT FOREIGN KEY REFERENCES Dim_Customer(CustomerID),
-                    EmployeeKey INT FOREIGN KEY REFERENCES Dim_Employee(EmployeeID),
-                    ProductKey INT FOREIGN KEY REFERENCES Dim_Product(ProductID),
+                    CustomerKey INT FOREIGN KEY REFERENCES DWH_TFOUTD_Dim_Customer(CustomerID),
+                    EmployeeKey INT FOREIGN KEY REFERENCES DWH_TFOUTD_Dim_Employee(EmployeeID),
+                    ProductKey INT FOREIGN KEY REFERENCES DWH_TFOUTD_Dim_Product(ProductID),
                     Quantity INT NOT NULL,
                     UnitPrice DECIMAL(18,4) NOT NULL,
                     Discount FLOAT NOT NULL,
@@ -181,12 +181,12 @@ def ensure_schema_exists():
                     OrderStatus NVARCHAR(50)
                 );
 
-                CREATE TABLE Fact_Purchases (
+                CREATE TABLE DWH_TFOUTD_Purchases_Fact (
                     PurchaseKey INT IDENTITY(1,1) PRIMARY KEY,
                     CreationDate DATETIME NOT NULL,
-                    SupplierKey INT FOREIGN KEY REFERENCES Dim_Supplier(SupplierID),
-                    EmployeeKey INT FOREIGN KEY REFERENCES Dim_Employee(EmployeeID),
-                    ProductKey INT FOREIGN KEY REFERENCES Dim_Product(ProductID),
+                    SupplierKey INT FOREIGN KEY REFERENCES DWH_TFOUTD_Dim_Supplier(SupplierID),
+                    EmployeeKey INT FOREIGN KEY REFERENCES DWH_TFOUTD_Dim_Employee(EmployeeID),
+                    ProductKey INT FOREIGN KEY REFERENCES DWH_TFOUTD_Dim_Product(ProductID),
                     Quantity INT NOT NULL,
                     UnitCost DECIMAL(18,4) NOT NULL,
                     TotalPurchaseCost DECIMAL(18,4) NOT NULL
@@ -685,9 +685,9 @@ def transform_fact_sales_merged(sqlserver_data):
     # --- VALIDATION SECTION ---
     print(f"\n🔍 Validating foreign keys for Fact_Sales...")
     
-    fact_sales = validate_and_fix_foreign_keys(fact_sales, 'EmployeeKey', 'Dim_Employee', 'EmployeeID')
-    fact_sales = validate_and_fix_foreign_keys(fact_sales, 'CustomerKey', 'Dim_Customer', 'CustomerID', placeholder_name="Unknown_Customer")
-    fact_sales = validate_and_fix_foreign_keys(fact_sales, 'ProductKey', 'Dim_Product', 'ProductID', placeholder_name="Unknown_Product")
+    fact_sales = validate_and_fix_foreign_keys(fact_sales, 'EmployeeKey', 'DWH_TFOUTD_Dim_Employee', 'EmployeeID')
+    fact_sales = validate_and_fix_foreign_keys(fact_sales, 'CustomerKey', 'DWH_TFOUTD_Dim_Customer', 'CustomerID', placeholder_name="Unknown_Customer")
+    fact_sales = validate_and_fix_foreign_keys(fact_sales, 'ProductKey', 'DWH_TFOUTD_Dim_Product', 'ProductID', placeholder_name="Unknown_Product")
     
     # Remove rows with critical nulls
     fact_sales = fact_sales.dropna(subset=['OrderDate', 'CustomerKey', 'ProductKey'])
@@ -768,9 +768,9 @@ def transform_fact_purchases():
     # --- VALIDATION SECTION ---
     print(f"\n🔍 Validating foreign keys for Fact_Purchases...")
     
-    fact_purchases = validate_and_fix_foreign_keys(fact_purchases, 'EmployeeKey', 'Dim_Employee', 'EmployeeID')
-    fact_purchases = validate_and_fix_foreign_keys(fact_purchases, 'SupplierKey', 'Dim_Supplier', 'SupplierID', placeholder_name="Unknown_Supplier")
-    fact_purchases = validate_and_fix_foreign_keys(fact_purchases, 'ProductKey', 'Dim_Product', 'ProductID', placeholder_name="Unknown_Product")
+    fact_purchases = validate_and_fix_foreign_keys(fact_purchases, 'EmployeeKey', 'DWH_TFOUTD_Dim_Employee', 'EmployeeID')
+    fact_purchases = validate_and_fix_foreign_keys(fact_purchases, 'SupplierKey', 'DWH_TFOUTD_Dim_Supplier', 'SupplierID', placeholder_name="Unknown_Supplier")
+    fact_purchases = validate_and_fix_foreign_keys(fact_purchases, 'ProductKey', 'DWH_TFOUTD_Dim_Product', 'ProductID', placeholder_name="Unknown_Product")
     
     # Remove rows with critical nulls
     fact_purchases = fact_purchases.dropna(subset=['CreationDate', 'SupplierKey', 'ProductKey'])
@@ -788,43 +788,6 @@ def transform_fact_purchases():
     print(f"✓ Prepared {len(fact_purchases)} valid purchase records for loading")
     return fact_purchases, dtype_purchases
 
-def rename_tables_to_new_format():
-    """Rename tables to the new TFOUTD format."""
-    print("\n🔄 Renaming tables to new format...")
-    
-    rename_commands = [
-        ("Dim_Product", "DWH_TFOUTD_Dim_Product"),
-        ("Dim_Customer", "DWH_TFOUTD_Dim_Customer"),
-        ("Dim_Employee", "DWH_TFOUTD_Dim_Employee"),
-        ("Dim_Supplier", "DWH_TFOUTD_Dim_Supplier"),
-        ("Fact_Sales", "DWH_TFOUTD_Sales_Fact"),
-        ("Fact_Purchases", "DWH_TFOUTD_Purchases_Fact")
-    ]
-    
-    with engine.connect() as conn:
-        for old_name, new_name in rename_commands:
-            try:
-                # Check if old table exists
-                check_query = text(f"""
-                    SELECT COUNT(*) 
-                    FROM INFORMATION_SCHEMA.TABLES 
-                    WHERE TABLE_NAME = '{old_name}'
-                """)
-                result = conn.execute(check_query)
-                if result.fetchone()[0] > 0:
-                    # Drop new table if it exists
-                    conn.execute(text(f"IF OBJECT_ID('{new_name}', 'U') IS NOT NULL DROP TABLE {new_name};"))
-                    # Rename old table
-                    conn.execute(text(f"EXEC sp_rename '{old_name}', '{new_name}';"))
-                    print(f"✓ Renamed {old_name} to {new_name}")
-                else:
-                    print(f"⚠️  {old_name} not found, skipping rename")
-            except Exception as e:
-                print(f"✗ Error renaming {old_name}: {e}")
-        
-        conn.commit()
-    
-    print("✓ Table renaming completed!")
 
 # --- MAIN EXECUTION ---
 if __name__ == "__main__":
@@ -867,22 +830,22 @@ if __name__ == "__main__":
     
     (d_prod, dtype_prod), (d_cust, dtype_cust), (d_emp, dtype_emp), (d_supp, dtype_supp) = dims
     
-    if load_to_sql(d_prod, 'Dim_Product', dtype_prod): 
+    if load_to_sql(d_prod, 'DWH_TFOUTD_Dim_Product', dtype_prod): 
         success_count += 1
     else: 
         fail_count += 1
     
-    if load_to_sql(d_cust, 'Dim_Customer', dtype_cust): 
+    if load_to_sql(d_cust, 'DWH_TFOUTD_Dim_Customer', dtype_cust): 
         success_count += 1
     else: 
         fail_count += 1
     
-    if load_to_sql(d_emp, 'Dim_Employee', dtype_emp): 
+    if load_to_sql(d_emp, 'DWH_TFOUTD_Dim_Employee', dtype_emp): 
         success_count += 1
     else: 
         fail_count += 1
     
-    if load_to_sql(d_supp, 'Dim_Supplier', dtype_supp): 
+    if load_to_sql(d_supp, 'DWH_TFOUTD_Dim_Supplier', dtype_supp): 
         success_count += 1
     else: 
         fail_count += 1
@@ -890,7 +853,7 @@ if __name__ == "__main__":
     # ========== TRANSFORM & LOAD FACT SALES (MERGED) ==========
     f_sales, dtype_sales = transform_fact_sales_merged(sqlserver_data)
     if not f_sales.empty and dtype_sales:
-        if load_to_sql(f_sales, 'Fact_Sales', dtype_sales): 
+        if load_to_sql(f_sales, 'DWH_TFOUTD_Sales_Fact', dtype_sales): 
             success_count += 1
         else: 
             fail_count += 1
@@ -898,7 +861,7 @@ if __name__ == "__main__":
     # ========== TRANSFORM & LOAD FACT PURCHASES ==========
     f_purchases, dtype_purchases = transform_fact_purchases()
     if not f_purchases.empty and dtype_purchases:
-        if load_to_sql(f_purchases, 'Fact_Purchases', dtype_purchases): 
+        if load_to_sql(f_purchases, 'DWH_TFOUTD_Purchases_Fact', dtype_purchases): 
             success_count += 1
         else: 
             fail_count += 1
@@ -914,7 +877,7 @@ if __name__ == "__main__":
     print("="*70)
     
     with engine.connect() as conn:
-        tables = ['Dim_Product', 'Dim_Customer', 'Dim_Employee', 'Dim_Supplier', 'Fact_Sales', 'Fact_Purchases']
+        tables = ['DWH_TFOUTD_Dim_Product', 'DWH_TFOUTD_Dim_Customer', 'DWH_TFOUTD_Dim_Employee', 'DWH_TFOUTD_Dim_Supplier', 'DWH_TFOUTD_Sales_Fact', 'DWH_TFOUTD_Purchases_Fact']
         
         print("\n📊 Final Table Counts:")
         for table in tables:
@@ -929,7 +892,7 @@ if __name__ == "__main__":
                 SUM(TotalRevenue) as total_revenue,
                 AVG(TotalRevenue) as avg_revenue,
                 SUM(CASE WHEN TaxRate > 0 THEN 1 ELSE 0 END) as taxed_orders
-            FROM Fact_Sales
+            FROM DWH_TFOUTD_Sales_Fact
         """))
         
         stats = result.fetchone()
@@ -942,4 +905,3 @@ if __name__ == "__main__":
     print("\n✓ ETL Process completed successfully!")
     print("✓ Data from both sources integrated into Data Warehouse")
     print("\n" + "="*70 + "\n")
-    rename_tables_to_new_format()
