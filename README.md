@@ -7,8 +7,11 @@ python -m venv .venv
 # source .venv/bin/activate  # Mac/Linux
 
 Requirements
+
 Python 3.8+
+
 SQL Server (or SQL Express)
+
 ODBC Driver 17 for SQL Server
 
 # 2. Install Requirements
