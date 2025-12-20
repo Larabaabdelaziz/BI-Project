@@ -6,6 +6,11 @@ python -m venv .venv
 .venv\Scripts\activate  # Windows
 # source .venv/bin/activate  # Mac/Linux
 
+Requirements
+Python 3.8+
+SQL Server (or SQL Express)
+ODBC Driver 17 for SQL Server
+
 # 2. Install Requirements
 bash
 pip install pandas streamlit plotly sqlalchemy pyodbc jupyter
