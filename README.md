@@ -23,3 +23,35 @@ python etl/etl.py
 
 # 4. Launch Dashboard
 streamlit run etl/dashboard.py
+
+
+
+
+
+
+Choix Techniques
+
+
+Bibliothèques Python
+
+
+Streamlit : Dashboard rapide sans frontend complexe
+
+
+Pandas : Standard pour manipulation de données
+
+
+Plotly : Graphiques interactifs simples
+
+
+SQLAlchemy : Connexion base de données simplifiée
+
+
+Architecture
+
+
+Schéma en étoile : Compréhension facile, requêtes rapides
+
+ETL en Python : Un seul langage, coût nul
+
+SQL Server : Standard entreprise, performances OLAP
