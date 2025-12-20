@@ -7,8 +7,11 @@ python -m venv .venv
 # source .venv/bin/activate  # Mac/Linux
 
 Requirements
+
 Python 3.8+
+
 SQL Server (or SQL Express)
+
 ODBC Driver 17 for SQL Server
 
 # 2. Install Requirements
@@ -20,3 +23,35 @@ python etl/etl.py
 
 # 4. Launch Dashboard
 streamlit run etl/dashboard.py
+
+
+
+
+
+
+Choix Techniques
+
+
+Bibliothèques Python
+
+
+Streamlit : Dashboard rapide sans frontend complexe
+
+
+Pandas : Standard pour manipulation de données
+
+
+Plotly : Graphiques interactifs simples
+
+
+SQLAlchemy : Connexion base de données simplifiée
+
+
+Architecture
+
+
+Schéma en étoile : Compréhension facile, requêtes rapides
+
+ETL en Python : Un seul langage, coût nul
+
+SQL Server : Standard entreprise, performances OLAP
